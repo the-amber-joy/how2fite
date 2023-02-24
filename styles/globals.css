@@ -7,6 +7,15 @@ body {
   font-family: 'Source Code Pro', Courier New, monospace;
 }
 
+html {
+  color-scheme: dark;
+}
+
+body {
+  color: rgb(200, 200, 200);
+  background: rgb(30, 30, 30);
+}
+
 a {
   color: #0070f3;
   text-decoration: none;
@@ -25,15 +34,4 @@ a:active {
 
 * {
   box-sizing: border-box;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-  body {
-    color: rgb(200, 200, 200);
-    background: rgb(30, 30, 30);
-  }
 }

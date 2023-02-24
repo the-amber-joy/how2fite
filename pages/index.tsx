@@ -64,7 +64,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>postgres.js + next.js</title>
+        <title>How 2 Fite</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className={styles.header}>
@@ -72,9 +72,7 @@ export default function Home() {
       </header>
       <main className={styles.main}>
         <div className={styles.title}>FITE!</div>
-        <div>
           <FightComponent action={action || ""} part={part || ""} />
-        </div>
         <button className={styles.goBtn} onClick={pickRandom}>
           &#128551;
         </button>
