@@ -11,38 +11,11 @@
   width: 100%;
   flex: 1;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-}
-
-.done,
-.undone {
-  display: flex;
-  flex-direction: column;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  width: 50%;
-}
-
-.scrollable {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 170px);
-  overflow: scroll;
-}
-
-.firstRow {
-  display: flex;
-  align-items: center;
-  height: 52px;
-}
-
-.reverseWrapper {
-  display: flex;
-  margin-left: auto;
-  height: 100%;
   align-items: center;
 }
+
 
 .header {
   width: 100%;
@@ -57,47 +30,23 @@
   padding-left: 24px;
 }
 
-.input {
-  border: 1px solid #c5c4c7;
-  border-radius: 2px;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-size: 16px;
-  height: 32px;
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 100%;
-}
-
-.input:focus,
-.input:active {
-  border: 1px solid #2b66ff;
-}
-
-.createBtn,
-.removeBtn {
+.goBtn {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
   background-color: transparent;
   border: 1px solid transparent;
-  color: #c5c4c7;
-  border-radius: 2px;
-  height: 32px;
-  width: 32px;
+  transition: all 100ms ease-out;
 }
 
-.createBtn:hover,
-.createBtn:focus,
-.createBtn:active {
-  color: #1cec73;
+.goBtn:hover {
+  transition: all 100ms ease-in;
+  scale: 1.25;
 }
 
-.removeBtn:hover,
-.removeBtn:focus,
-.removeBtn:active {
-  color: #ee6262;
+.goBtn:active {
+  filter: hue-rotate(180deg)	
 }
 
 .check {

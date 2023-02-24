@@ -1,106 +1,65 @@
-import { useState, useEffect } from 'react'
-import Head from 'next/head'
+import { useState, useEffect } from "react";
+import Head from "next/head";
 
-import { type ToDo } from '../lib/todos'
+import { type Action } from "../lib/actions";
 
-import styles from '../styles/Home.module.css'
+import styles from "../styles/Home.module.css";
+import { Part } from "../lib/parts";
 
-interface ToDoComponentProps {
-  key: number
-  text: string
-  done: boolean
-  onChange: () => void
-  onRemove: () => void
+interface FightComponentProps {
+  action: string;
+  part: string;
 }
 
-const ToDoComponent = ({
-  text,
-  done,
-  onChange,
-  onRemove,
-}: ToDoComponentProps) => {
-  const cards = ['card', 'card2', 'card3', 'card4', 'card5']
-
+const FightComponent = ({ action, part }: FightComponentProps) => {
   return (
-    <div className={styles[cards[Math.floor(Math.random() * cards.length)]]}>
-      <div
-        className={styles.text}
-        style={{ textDecoration: done ? 'line-through' : '' }}
-      >
-        {text}
-      </div>
-      <div className={styles.reverseWrapper}>
-        <input
-          type="checkbox"
-          className={styles.check}
-          checked={done}
-          onChange={onChange}
-        />
-        <button className={styles.removeBtn} onClick={onRemove}>
-          &#10005;
-        </button>
+    <div>
+      <div className={styles.text}>
+        {action} {part}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default function Home() {
-  const [newText, setNewText] = useState('')
-  const [toDos, setToDos] = useState<ToDo[]>([])
+  const [actions, setActions] = useState<Action[]>([]);
+  const [parts, setParts] = useState<Part[]>([]);
 
-  const getToDos = async () => {
-    const resp = await fetch('api/todos')
-    const toDos = await resp.json()
-    setToDos(toDos)
-  }
+  const [action, setAction] = useState<string | null>();
+  const [part, setPart] = useState<string | null>();
 
-  const createToDo = async () => {
-    await fetch('api/todos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: newText }),
-    })
+  const getActions = async () => {
+    const resp = await fetch("api/actions");
+    const actions = await resp.json();
 
-    setNewText('')
+    setActions(actions);
+  };
 
-    await getToDos()
-  }
+  const getParts = async () => {
+    const resp = await fetch("api/parts");
+    const parts = await resp.json();
 
-  const updateToDo = async (todo: ToDo) => {
-    const newBody = {
-      id: todo.id,
-      done: !todo.done,
-    }
-
-    await fetch('api/todos', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newBody),
-    })
-
-    await getToDos()
-  }
-
-  const removeToDo = async (todo: ToDo) => {
-    const newBody = {
-      id: todo.id,
-    }
-
-    await fetch('api/todos', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newBody),
-    })
-
-    await getToDos()
-  }
+    setParts(parts);
+  };
 
   useEffect(() => {
-    getToDos()
-  }, [])
+    getActions();
+    getParts();
+  }, []);
 
-  const done = toDos.filter((todo) => todo.done)
-  const undone = toDos.filter((todo) => !todo.done)
+  const pickRandom = () => {
+    const randomPart = Math.floor(Math.random() * parts.length);
+    setPart(parts[randomPart].name);
+
+    const randomAction = Math.floor(Math.random() * actions.length);
+    setAction(actions[randomAction].name);
+  };
+
+  useEffect(() => {
+    if (actions.length > 0 && parts.length > 0) {
+      pickRandom();
+    }
+  }, [actions, parts]);
 
   return (
     <div className={styles.container}>
@@ -109,67 +68,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className={styles.header}>
-        <h2>
-          <a href="https://github.com/porsager/postgres">postgres.js</a> +{' '}
-          <a href="https://nextjs.org">next.js</a> to dos
-        </h2>
+        <h2>HOW 2 FITE</h2>
       </header>
       <main className={styles.main}>
-        <div className={styles.undone}>
-          <div className={styles.firstRow}>
-            <div className={styles.title}>to dos</div>
-            <div className={styles.reverseWrapper}>
-              <input
-                className={styles.input}
-                value={newText}
-                onChange={(e) => setNewText(e.target.value)}
-                onKeyDown={(e) => e.code === 'Enter' && createToDo()}
-              ></input>
-              <button className={styles.createBtn} onClick={createToDo}>
-                &#10011;
-              </button>
-            </div>
-          </div>
-          <div className={styles.scrollable}>
-            {undone.map((todo, index) => (
-              <ToDoComponent
-                key={todo.id}
-                text={`${index + 1}. ${todo.text}`}
-                done={todo.done}
-                onChange={() => updateToDo(todo)}
-                onRemove={() => removeToDo(todo)}
-              />
-            ))}
-          </div>
+        <div className={styles.title}>FITE!</div>
+        <div>
+          <FightComponent action={action || ""} part={part || ""} />
         </div>
-
-        <div className={styles.done}>
-          <div className={styles.firstRow}>
-            <div className={styles.title}>done</div>
-          </div>
-          <div className={styles.scrollable}>
-            {done.map((todo, index) => (
-              <ToDoComponent
-                key={todo.id}
-                text={`${index + 1}. ${todo.text}`}
-                done={todo.done}
-                onChange={() => updateToDo(todo)}
-                onRemove={() => removeToDo(todo)}
-              />
-            ))}
-          </div>
-        </div>
+        <button className={styles.goBtn} onClick={pickRandom}>
+          &#128551;
+        </button>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://github.com/vercel/next.js/tree/canary/examples/with-postgres"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          powered by postgres.js & next.js
-        </a>
-      </footer>
     </div>
-  )
+  );
 }
