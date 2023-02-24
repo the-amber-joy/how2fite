@@ -4,35 +4,58 @@ import Head from "next/head";
 import { type Action } from "../lib/actions";
 
 import styles from "../styles/Home.module.css";
+import { Part } from "../lib/parts";
 
-interface ActionComponentProps {
-  key: number;
-  name: string;
+interface FightComponentProps {
+  action: string;
+  part: string;
 }
 
-const ActionComponent = ({ name }: ActionComponentProps) => {
+const FightComponent = ({ action, part }: FightComponentProps) => {
   return (
     <div>
-      <div className={styles.text}>{name}</div>
+      <div className={styles.text}>
+        {action} {part}
+      </div>
     </div>
   );
 };
 
 export default function Home() {
   const [actions, setActions] = useState<Action[]>([]);
+  const [parts, setParts] = useState<Part[]>([]);
+
+  const [action, setAction] = useState<string | null>();
+  const [part, setPart] = useState<string | null>();
 
   const getActions = async () => {
     const resp = await fetch("api/actions");
     const actions = await resp.json();
-    setActions(actions);
-    console.log(actions);
 
-    // TODO: Amber, 2023-02-24 - Pick a random action here
+    setActions(actions);
+  };
+
+  const getParts = async () => {
+    const resp = await fetch("api/parts");
+    const parts = await resp.json();
+
+    setParts(parts);
   };
 
   useEffect(() => {
     getActions();
+    getParts();
   }, []);
+
+  useEffect(() => {
+    if (actions.length > 0 && parts.length > 0) {
+      const randomPart = Math.floor(Math.random() * parts.length);
+      setPart(parts[randomPart].name);
+
+      const randomAction = Math.floor(Math.random() * actions.length);
+      setAction(actions[randomAction].name);
+    }
+  }, [actions, parts]);
 
   return (
     <div className={styles.container}>
@@ -46,12 +69,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.title}>FITE!</div>
         <div>
-          {actions.map((action, index) => (
-            <ActionComponent
-              key={action.id}
-              name={action.name}
-            />
-          ))}
+          <FightComponent action={action || ""} part={part || ""} />
         </div>
       </main>
     </div>
