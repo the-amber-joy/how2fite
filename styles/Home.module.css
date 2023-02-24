@@ -30,6 +30,24 @@
   padding-left: 24px;
 }
 
+.goBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  transition: all 100ms ease-out;
+}
+
+.goBtn:hover {
+  transition: all 100ms ease-in;
+  scale: 1.25;
+}
+
+.goBtn:active {
+  filter: hue-rotate(180deg)	
+}
 
 .check {
   background-color: transparent;

@@ -47,13 +47,17 @@ export default function Home() {
     getParts();
   }, []);
 
+  const pickRandom = () => {
+    const randomPart = Math.floor(Math.random() * parts.length);
+    setPart(parts[randomPart].name);
+
+    const randomAction = Math.floor(Math.random() * actions.length);
+    setAction(actions[randomAction].name);
+  };
+
   useEffect(() => {
     if (actions.length > 0 && parts.length > 0) {
-      const randomPart = Math.floor(Math.random() * parts.length);
-      setPart(parts[randomPart].name);
-
-      const randomAction = Math.floor(Math.random() * actions.length);
-      setAction(actions[randomAction].name);
+      pickRandom();
     }
   }, [actions, parts]);
 
@@ -71,6 +75,9 @@ export default function Home() {
         <div>
           <FightComponent action={action || ""} part={part || ""} />
         </div>
+        <button className={styles.goBtn} onClick={pickRandom}>
+          &#128551;
+        </button>
       </main>
     </div>
   );
