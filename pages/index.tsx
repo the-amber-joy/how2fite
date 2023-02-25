@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 
 import { type Action } from "../lib/actions";
-
-import styles from "../styles/Home.module.css";
 import { Part } from "../lib/parts";
+import styles from "../styles/Home.module.css";
 
 interface FightComponentProps {
   action: string;
@@ -72,7 +71,7 @@ export default function Home() {
       </header>
       <main className={styles.main}>
         <div className={styles.title}>FITE!</div>
-          <FightComponent action={action || ""} part={part || ""} />
+        <FightComponent action={action || ""} part={part || ""} />
         <button className={styles.goBtn} onClick={pickRandom}>
           &#128551;
         </button>

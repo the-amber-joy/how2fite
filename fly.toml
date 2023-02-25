@@ -1,11 +1,13 @@
-# fly.toml file generated for how2fite on 2023-02-24T13:21:29-06:00
+# fly.toml file generated for how2fite on 2023-02-24T22:42:51-06:00
 
 app = "how2fite"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
-[env]
+# [build]
+#   [build.args]
+#     NEXT_PUBLIC_EXAMPLE = "Value goes here"
 
 [experimental]
   auto_rollback = true
