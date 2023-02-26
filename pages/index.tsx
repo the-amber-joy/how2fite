@@ -10,7 +10,7 @@ interface FightComponentProps {
   part: string;
 }
 
-const FightComponent = ({ action, part }: FightComponentProps) => {
+const FightComponent = ({ action = "", part = "" }: FightComponentProps) => {
   return (
     <div>
       <div className={styles.text}>
@@ -24,8 +24,12 @@ export default function Home() {
   const [actions, setActions] = useState<Action[]>([]);
   const [parts, setParts] = useState<Part[]>([]);
 
-  const [action, setAction] = useState<string | null>();
-  const [part, setPart] = useState<string | null>();
+  const [action, setAction] = useState<string>("");
+  const [part, setPart] = useState<string>("");
+
+  const defaultBtnText = <span>&#128551;</span>;
+  const activeBtnText = <span>&#x1F635;</span>
+  const [buttonText, setButtonText] = useState<JSX.Element>(defaultBtnText);
 
   const getActions = async () => {
     const resp = await fetch("api/actions");
@@ -41,6 +45,7 @@ export default function Home() {
     setParts(parts);
   };
 
+  // load optons from DB on pageload
   useEffect(() => {
     getActions();
     getParts();
@@ -53,6 +58,20 @@ export default function Home() {
     const randomAction = Math.floor(Math.random() * actions.length);
     setAction(actions[randomAction].name);
   };
+
+  const handleClick = () => {
+    pickRandom()
+  }
+
+  const handleMouseDown = () => {
+    console.log("mouse down")
+    setButtonText(activeBtnText)
+  }
+
+  const handleMouseUp = () => {
+    console.log("mouse up")
+    setButtonText(defaultBtnText)
+  }
 
   useEffect(() => {
     if (actions.length > 0 && parts.length > 0) {
@@ -71,9 +90,16 @@ export default function Home() {
       </header>
       <main className={styles.main}>
         <div className={styles.title}>FITE!</div>
-        <FightComponent action={action || ""} part={part || ""} />
-        <button className={styles.goBtn} onClick={pickRandom}>
-          &#128551;
+        <FightComponent action={action} part={part} />
+        <button
+          className={styles.goBtn}
+          onClick={handleClick}
+          onMouseDown={() => handleMouseDown()}
+          onMouseUp={() => handleMouseUp()}
+          onTouchStart={() => handleMouseDown()}
+          onTouchEnd={() => handleMouseUp()}
+        >
+          {buttonText}
         </button>
       </main>
     </div>

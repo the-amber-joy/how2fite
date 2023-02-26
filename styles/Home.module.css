@@ -40,13 +40,15 @@
   transition: all 100ms ease-out;
 }
 
-.goBtn:hover {
-  transition: all 100ms ease-in;
-  scale: 1.25;
+@media(hover: hover) and (pointer: fine) {
+  .goBtn:hover {
+    transition: all 100ms ease-in;
+    scale: 1.25;
+  }
 }
 
 .goBtn:active {
-  filter: hue-rotate(180deg)	
+  filter: hue-rotate(300deg)	
 }
 
 .check {
