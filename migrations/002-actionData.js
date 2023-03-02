@@ -16,8 +16,8 @@ exports.up = async function (sql) {
     ,('tweak')
     ,('spit at')
     ,('pinch')
-    ,('yank');
-    ,('poke');
+    ,('yank')
+    ,('poke')
     ,('slam');
   `;
 };
