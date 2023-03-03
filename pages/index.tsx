@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 
+import speak from "../util/speak";
 import { type Action } from "../lib/actions";
 import { Part } from "../lib/parts";
 import styles from "../styles/Home.module.css";
@@ -28,7 +29,7 @@ export default function Home() {
   const [part, setPart] = useState<string>("");
 
   const defaultBtnText = <span>&#128551;</span>;
-  const activeBtnText = <span>&#x1F635;</span>
+  const activeBtnText = <span>&#x1F635;</span>;
   const [buttonText, setButtonText] = useState<JSX.Element>(defaultBtnText);
 
   const getActions = async () => {
@@ -51,6 +52,12 @@ export default function Home() {
     getParts();
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      speak(`${action} ${part}!`);
+    }
+  }, [action, part]);
+
   const pickRandom = () => {
     const randomPart = Math.floor(Math.random() * parts.length);
     setPart(parts[randomPart].name);
@@ -60,18 +67,16 @@ export default function Home() {
   };
 
   const handleClick = () => {
-    pickRandom()
-  }
+    pickRandom();
+  };
 
   const handleMouseDown = () => {
-    console.log("mouse down")
-    setButtonText(activeBtnText)
-  }
+    setButtonText(activeBtnText);
+  };
 
   const handleMouseUp = () => {
-    console.log("mouse up")
-    setButtonText(defaultBtnText)
-  }
+    setButtonText(defaultBtnText);
+  };
 
   useEffect(() => {
     if (actions.length > 0 && parts.length > 0) {
