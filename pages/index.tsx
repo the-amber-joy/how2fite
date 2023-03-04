@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
+import clsx from "clsx";
 import Head from "next/head";
+import { VolumeX, Volume2 } from "react-feather";
 
 import speak from "../util/speak";
 import { type Action } from "../lib/actions";
 import { Part } from "../lib/parts";
 import styles from "../styles/Home.module.css";
+
+const soundOn = new URL(
+  "../sounds/sound-on.wav",
+  import.meta.url
+) as unknown as string;
 
 interface FightComponentProps {
   action: string;
@@ -32,6 +39,9 @@ export default function Home() {
   const activeBtnText = <span>&#x1F635;</span>;
   const [buttonText, setButtonText] = useState<JSX.Element>(defaultBtnText);
 
+  const [playSounds, setPlaySounds] = useState<boolean>(false);
+  const [soundIcon, setSoundIcon] = useState<JSX.Element>(<VolumeX />);
+
   const getActions = async () => {
     const resp = await fetch("api/actions");
     const actions = await resp.json();
@@ -53,7 +63,23 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (!playSounds) {
+      setSoundIcon(<VolumeX />);
+    } else {
+      setSoundIcon(<Volume2 />);
+    }
+  }, [playSounds, setSoundIcon]);
+
+  const toggleVolume = () => {
+    setPlaySounds(!playSounds);
+    if (!playSounds) {
+      const audio = new Audio(soundOn);
+      audio.play();
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && playSounds) {
       speak(`${action} ${part}!`);
     }
   }, [action, part]);
@@ -107,6 +133,14 @@ export default function Home() {
           {buttonText}
         </button>
       </main>
+      <footer className={styles.footer}>
+        <button
+          className={clsx(styles.soundBtn, playSounds && styles.active)}
+          onClick={toggleVolume}
+        >
+          {soundIcon}
+        </button>
+      </footer>
     </div>
   );
 }

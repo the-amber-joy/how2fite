@@ -16,11 +16,10 @@
   align-items: center;
 }
 
-
 .header {
   width: 100%;
   height: 50px;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid rgb(120, 120, 120);
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -38,9 +37,10 @@
   background-color: transparent;
   border: 1px solid transparent;
   transition: all 100ms ease-out;
+  cursor: pointer;
 }
 
-@media(hover: hover) and (pointer: fine) {
+@media (hover: hover) and (pointer: fine) {
   .goBtn:hover {
     transition: all 100ms ease-in;
     scale: 1.25;
@@ -48,7 +48,7 @@
 }
 
 .goBtn:active {
-  filter: hue-rotate(300deg)	
+  filter: hue-rotate(300deg);
 }
 
 .check {
@@ -69,6 +69,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border-color: rgb(90, 90, 90);
 }
 
 .footer a {
@@ -98,68 +99,6 @@
   white-space: nowrap;
 }
 
-.card,
-.card2,
-.card3,
-.card4,
-.card5 {
-  display: flex;
-  color: #c5c4c7;
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 1rem !important;
-  margin-bottom: 1rem;
-  height: 50px;
-  align-items: center;
-  text-align: left;
-  text-decoration: none;
-}
-
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-}
-
-.card2:hover,
-.card2:focus,
-.card2:active {
-  color: #ae00f3;
-}
-
-.card3:hover,
-.card3:focus,
-.card3:active {
-  color: #f3003d;
-}
-
-.card4:hover,
-.card4:focus,
-.card4:active {
-  color: #f39200;
-}
-
-.card4:hover,
-.card4:focus,
-.card4:active {
-  color: #29f300;
-}
-
-.card5:hover,
-.card5:focus,
-.card5:active {
-  color: #00f3cb;
-}
-
-.card,
-.card2,
-.card3,
-.card4,
-.card5 h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-}
-
 .text {
   display: flex;
   align-items: center;
@@ -169,37 +108,15 @@
   line-height: 1.5;
 }
 
-@media (max-width: 600px) {
-  .main {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .header {
-    height: 70px;
-  }
-
-  .title {
-    flex: none;
-  }
-
-  .done,
-  .undone {
-    width: 100%;
-  }
-
-  .footer {
-    position: relative;
-  }
+.soundBtn {
+  position: relative;
+  padding: 0.5em 1em;
+  border: 0;
+  border-radius: 2em;
+  background-color: red;
+  cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
-  .header {
-    border-bottom: 1px solid rgb(120, 120, 120);
-  }
-
-  .card,
-  .footer {
-    border-color: rgb(90, 90, 90);
-  }
+.soundBtn.active {
+  background-color: green;
 }
