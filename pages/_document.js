@@ -3,7 +3,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>How 2 Fite</title>
+        <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#000000" />

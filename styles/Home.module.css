@@ -33,7 +33,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 8rem;
   background-color: transparent;
   border: 1px solid transparent;
   transition: all 100ms ease-out;
@@ -51,15 +51,6 @@
   filter: hue-rotate(300deg);
 }
 
-.check {
-  background-color: transparent;
-  border: 1px solid #c5c4c7;
-  border-radius: 2px;
-  height: 20px;
-  width: 20px;
-  margin-right: 10px;
-}
-
 .footer {
   position: fixed;
   bottom: 0;
@@ -70,23 +61,6 @@
   justify-content: center;
   align-items: center;
   border-color: rgb(90, 90, 90);
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.title a {
-  color: #2b66ff;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
 }
 
 .title {
@@ -113,10 +87,13 @@
   padding: 0.5em 1em;
   border: 0;
   border-radius: 2em;
-  background-color: red;
   cursor: pointer;
 }
 
-.soundBtn.active {
-  background-color: green;
+.soundBtn.half {
+  background-color: rgb(255, 255, 0, .5);
+}
+
+.soundBtn.full {
+  background-color: rgb(0, 255, 0, .5);
 }

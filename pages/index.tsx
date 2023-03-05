@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import clsx from "clsx";
 import Head from "next/head";
-import { VolumeX, Volume2 } from "react-feather";
+import { VolumeX, Volume2, Volume1 } from "react-feather";
 
 import speak from "../util/speak";
 import { type Action } from "../lib/actions";
@@ -12,6 +12,12 @@ const soundOn = new URL(
   "../sounds/sound-on.wav",
   import.meta.url
 ) as unknown as string;
+
+const VOLUME = {
+  MUTE: { level: 0, name: "mute", icon: <VolumeX /> },
+  HALF: { level: 0.5, name: "half", icon: <Volume1 /> },
+  FULL: { level: 1, name: "full", icon: <Volume2 /> },
+};
 
 interface FightComponentProps {
   action: string;
@@ -39,9 +45,6 @@ export default function Home() {
   const activeBtnText = <span>&#x1F635;</span>;
   const [buttonText, setButtonText] = useState<JSX.Element>(defaultBtnText);
 
-  const [playSounds, setPlaySounds] = useState<boolean>(false);
-  const [soundIcon, setSoundIcon] = useState<JSX.Element>(<VolumeX />);
-
   const getActions = async () => {
     const resp = await fetch("api/actions");
     const actions = await resp.json();
@@ -62,35 +65,43 @@ export default function Home() {
     getParts();
   }, []);
 
-  useEffect(() => {
-    if (!playSounds) {
-      setSoundIcon(<VolumeX />);
-    } else {
-      setSoundIcon(<Volume2 />);
-    }
-  }, [playSounds, setSoundIcon]);
+  const [volume, setVolume] = useState<{
+    level: number;
+    name: string;
+    icon: JSX.Element;
+  }>(VOLUME.MUTE);
 
-  const toggleVolume = () => {
-    setPlaySounds(!playSounds);
-    if (!playSounds) {
+  const changeVolume = () => {
+    if (volume == VOLUME.MUTE) {
+      setVolume(VOLUME.HALF);
       const audio = new Audio(soundOn);
+      audio.volume = VOLUME.HALF.level;
       audio.play();
+    }
+    if (volume == VOLUME.HALF) {
+      setVolume(VOLUME.FULL);
+      const audio = new Audio(soundOn);
+      audio.volume = VOLUME.FULL.level;
+      audio.play();
+    }
+    if (volume == VOLUME.FULL) {
+      setVolume(VOLUME.MUTE);
     }
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined" && playSounds) {
-      speak(`${action} ${part}!`);
+    if (typeof window !== "undefined" && volume !== VOLUME.MUTE) {
+      speak(`${action} ${part}!`, volume.level);
     }
-  }, [action, part]);
+  }, [action, part, volume]);
 
-  const pickRandom = () => {
+  const pickRandom = useCallback(() => {
     const randomPart = Math.floor(Math.random() * parts.length);
     setPart(parts[randomPart].name);
 
     const randomAction = Math.floor(Math.random() * actions.length);
     setAction(actions[randomAction].name);
-  };
+  }, [actions, parts]);
 
   const handleClick = () => {
     pickRandom();
@@ -108,13 +119,12 @@ export default function Home() {
     if (actions.length > 0 && parts.length > 0) {
       pickRandom();
     }
-  }, [actions, parts]);
+  }, [actions, parts, pickRandom]);
 
   return (
     <div className={styles.container}>
       <Head>
         <title>How 2 Fite</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className={styles.header}>
         <h2>HOW 2 FITE</h2>
@@ -135,10 +145,10 @@ export default function Home() {
       </main>
       <footer className={styles.footer}>
         <button
-          className={clsx(styles.soundBtn, playSounds && styles.active)}
-          onClick={toggleVolume}
+          className={clsx(styles.soundBtn, styles[volume.name])}
+          onClick={changeVolume}
         >
-          {soundIcon}
+          {volume.icon}
         </button>
       </footer>
     </div>
