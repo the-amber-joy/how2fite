@@ -8,8 +8,13 @@ import { type Action } from "../lib/actions";
 import { Part } from "../lib/parts";
 import styles from "../styles/Home.module.css";
 
-const soundOn = new URL(
-  "../sounds/sound-on.wav",
+const letsFightSound = new URL(
+  "../sounds/letsfight.wav",
+  import.meta.url
+) as unknown as string;
+
+const fightSound = new URL(
+  "../sounds/fight.wav",
   import.meta.url
 ) as unknown as string;
 
@@ -43,6 +48,9 @@ export default function Home() {
 
   const defaultBtnText = <span>&#128551;</span>;
   const activeBtnText = <span>&#x1F635;</span>;
+  // \u200D (joiner)
+  //1F62B
+  //
   const [buttonText, setButtonText] = useState<JSX.Element>(defaultBtnText);
 
   const getActions = async () => {
@@ -74,13 +82,13 @@ export default function Home() {
   const changeVolume = () => {
     if (volume == VOLUME.MUTE) {
       setVolume(VOLUME.HALF);
-      const audio = new Audio(soundOn);
+      const audio = new Audio(letsFightSound);
       audio.volume = VOLUME.HALF.level;
       audio.play();
     }
     if (volume == VOLUME.HALF) {
       setVolume(VOLUME.FULL);
-      const audio = new Audio(soundOn);
+      const audio = new Audio(fightSound);
       audio.volume = VOLUME.FULL.level;
       audio.play();
     }
@@ -93,7 +101,7 @@ export default function Home() {
     if (typeof window !== "undefined" && volume !== VOLUME.MUTE) {
       speak(`${action} ${part}!`, volume.level);
     }
-  }, [action, part, volume]);
+  }, [action, part]);
 
   const pickRandom = useCallback(() => {
     const randomPart = Math.floor(Math.random() * parts.length);
