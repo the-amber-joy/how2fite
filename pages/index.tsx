@@ -45,12 +45,16 @@ export default function Home() {
 
   const [action, setAction] = useState<string>("");
   const [part, setPart] = useState<string>("");
+  const [counter, setCounter] = useState<number>(0);
 
-  const defaultBtnText = <span>&#128551;</span>;
-  const activeBtnText = <span>&#x1F635;</span>;
+  const defaultBtnText = <span>&#128551;</span>; // anguished face (open sad mouth, big eyes)
+  const activeBtns = [
+    <span>&#x1F620;</span>, // angry face
+    <span>&#x1F616;</span>, // confounded face (squiggle mouth, squinty eyes)
+    <span>&#x1F62B;</span>, // tired face (open sad mouth, squinty eyes)
+    <span>&#x1F635;</span>, // dizzy face (X-eyes, O mouth)
+  ];
   // \u200D (joiner)
-  //1F62B
-  //
   const [buttonText, setButtonText] = useState<JSX.Element>(defaultBtnText);
 
   const getActions = async () => {
@@ -116,11 +120,16 @@ export default function Home() {
   };
 
   const handleMouseDown = () => {
-    setButtonText(activeBtnText);
+    setButtonText(activeBtns[counter]);
   };
 
   const handleMouseUp = () => {
     setButtonText(defaultBtnText);
+    if (counter === 3) {
+      setCounter(0);
+    } else {
+      setCounter(counter + 1);
+    }
   };
 
   useEffect(() => {
