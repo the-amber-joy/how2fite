@@ -25,7 +25,7 @@ exports.up = async function (sql) {
 
 exports.down = async function (sql) {
   await sql`
-    DROP TABLE IF EXISTS action;
+    DELETE FROM action;
   `
 }
 

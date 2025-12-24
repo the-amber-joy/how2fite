@@ -2,7 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import clsx from "clsx";
 import Head from "next/head";
 import { VolumeX, Volume2, Volume1 } from "react-feather";
-
+import * as actions from "../lib/actions";
+import * as parts from "../lib/parts";
+import { GetServerSideProps } from "next";
 import speak from "../util/speak";
 import { type Action } from "../lib/actions";
 import { Part } from "../lib/parts";
@@ -39,9 +41,14 @@ const FightComponent = ({ action = "", part = "" }: FightComponentProps) => {
   );
 };
 
-export default function Home() {
-  const [actions, setActions] = useState<Action[]>([]);
-  const [parts, setParts] = useState<Part[]>([]);
+interface HomeProps {
+  initialActions: Action[];
+  initialParts: Part[];
+}
+
+export default function Home({ initialActions, initialParts }: HomeProps) {
+  const [actions, setActions] = useState<Action[]>(initialActions);
+  const [parts, setParts] = useState<Part[]>(initialParts);
 
   const [action, setAction] = useState<string>("");
   const [part, setPart] = useState<string>("");
@@ -71,11 +78,13 @@ export default function Home() {
     setParts(parts);
   };
 
+  // Data now loaded on server via getServerSideProps
+  // useEffect removed - no longer needed
   // load optons from DB on pageload
-  useEffect(() => {
-    getActions();
-    getParts();
-  }, []);
+  // useEffect(() => {
+  //   getActions();
+  //   getParts();
+  // }, []);
 
   const [volume, setVolume] = useState<{
     level: number;
@@ -171,3 +180,19 @@ export default function Home() {
     </div>
   );
 }
+
+
+export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+  // Fetch both actions and parts on the server in parallel
+  const [actionsData, partsData] = await Promise.all([
+    actions.list(),
+    parts.list()
+  ]);
+
+  return {
+    props: {
+      initialActions: actionsData,
+      initialParts: partsData,
+    },
+  };
+};
