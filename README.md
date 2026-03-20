@@ -1,1 +1,1 @@
-My kids wrote a whole bunch of words on a little whiteboard - actions and body parts - and asked me to make something that would randomly combine them "for lolz". Every word in this thing, including the purposefully misspelled title, came from my kids. It is ridiculous. 
+My kids wrote a whole bunch of words on a little whiteboard - fighting actions and body parts - and asked me to make something that would randomly combine them "for lolz". Every word in this thing, including the purposefully misspelled title, came from my kids. It is ridiculous. 
