@@ -5,10 +5,9 @@ import postgres from "postgres";
 let sql: any = null;
 
 function getDb() {
-  if (!sql && process.env.DATABASE_URL) {
-    const dbString = process.env.DATABASE_URL;
-    const connectionString = dbString.replace(/\[.*]/, "how2fite-db.internal");
-    sql = postgres(connectionString);
+  if (!sql && process.env.NETLIFY_DATABASE_URL) {
+    const dbString = process.env.NETLIFY_DATABASE_URL;
+    sql = postgres(dbString);
   }
   return sql;
 }
