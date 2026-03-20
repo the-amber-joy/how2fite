@@ -1,12 +1,11 @@
-import postgres from "postgres";
+import { neon } from '@netlify/neon';
 
 // Only initialize DB connection if DATABASE_URL is available (not during build)
 let sql: any = null;
 
 function getDb() {
-  if (!sql && process.env.NETLIFY_DATABASE_URL) {
-    const dbString = process.env.NETLIFY_DATABASE_URL;
-    sql = postgres(dbString);
+  if (!sql) {
+    sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
   }
   return sql;
 }
