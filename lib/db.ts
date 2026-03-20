@@ -1,6 +1,5 @@
 import postgres from "postgres";
 
-// attaching a fly database uses ipv6 for the host which apparently breaks things
 // Only initialize DB connection if DATABASE_URL is available (not during build)
 let sql: any = null;
 
